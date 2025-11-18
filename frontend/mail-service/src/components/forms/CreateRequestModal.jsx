@@ -1,10 +1,8 @@
-import { getDepartments } from "../../utils/helpers";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Alert from "react-bootstrap/Alert";
-import { sendRealisationRequest } from "../../utils/api/requests";
 import { Modal } from "react-bootstrap";
-import { useData } from "../../utils/DataProvider";
+import { useData } from "../../context/DataProvider";
 import { useFormState } from "../../utils/hooks/useFormState";
 import { sendTransaction } from "../../utils/api/sendTransaction";
 
@@ -26,8 +24,6 @@ export default function CreateRequestModal({ show, onHide }) {
     fromStartBalance: false,
   });
 
-  const departments = getDepartments(startup);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -38,13 +34,13 @@ export default function CreateRequestModal({ show, onHide }) {
       }
       await sendTransaction("sendRealisationRequest", formData)
 
-      await sendRealisationRequest(
-        startup.address,
-        formData.department,
-        formData.purpose,
-        formData.percentage.toString(),
-        formData.fromStartBalance.toString(),
-      );
+      // await sendRealisationRequest(
+      //   startup.address,
+      //   formData.department,
+      //   formData.purpose,
+      //   formData.percentage.toString(),
+      //   formData.fromStartBalance.toString(),
+      // );
 
       resetForm()
 
@@ -53,20 +49,6 @@ export default function CreateRequestModal({ show, onHide }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const calculateAmount = () => {
-    if (!formData.department || !formData.percentage) return 0;
-
-    const selectedDept = departments.find(
-      (dept) => dept.value === formData.department,
-    );
-    if (!selectedDept) return 0;
-
-    const percentage = parseFloat(formData.percentage);
-    if (isNaN(percentage)) return 0;
-
-    return ((selectedDept.budget * percentage) / 100).toFixed(2);
   };
 
   const isFormValid =
@@ -91,11 +73,11 @@ export default function CreateRequestModal({ show, onHide }) {
               required
             >
               <option value="">Выберите департамент</option>
-              {departments.map((dept) => (
+              {/* {departments.map((dept) => (
                 <option key={dept.value} value={dept.value}>
                   {dept.label} (Бюджет: {dept.budget} USD)
                 </option>
-              ))}
+              ))} */}
             </Form.Select>
           </Form.Group>
 
@@ -133,7 +115,7 @@ export default function CreateRequestModal({ show, onHide }) {
             </Form.Text>
           </Form.Group>
 
-          {formData.department && formData.percentage && (
+          {/* {formData.department && formData.percentage && (
             <Alert variant="info" className="mb-3">
               <strong>Расчетная сумма:</strong> {calculateAmount()} USD
               <br />
@@ -146,7 +128,7 @@ export default function CreateRequestModal({ show, onHide }) {
                 USD)
               </small>
             </Alert>
-          )}
+          )} */}
 
           <Form.Group className="mb-3">
             <Form.Check

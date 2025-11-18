@@ -1,12 +1,10 @@
-import { Alert, Spinner } from "react-bootstrap";
-import FetchAccounts from "../components/FetchAccounts";
+import { Alert } from "react-bootstrap";
 import StartupDepartments from "../components/startup/StartupDepartments";
 import StartupInfo from "../components/startup/StartupInfo";
-import { useData } from "../utils/DataProvider";
+import { useData } from "../context/DataProvider";
 
 export default function Profile() {
   let { startup, error } = useData();
-  console.log(startup);
 
   return (
     <>
@@ -20,7 +18,6 @@ export default function Profile() {
           <StartupDepartments startup={startup} />
         </div>
       )}
-      <FetchAccounts />
     </>
   );
 }

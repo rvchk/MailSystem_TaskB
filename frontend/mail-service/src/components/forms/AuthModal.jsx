@@ -1,14 +1,25 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { setPassword } from "../../utils/api/requests";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
+import { getUsers } from "../../utils/api/requests";
 
 export default function AuthModal({ show, onHide }) {
   const [error, setError] = useState("Заполните все поля");
   const [isLoading, setLoading] = useState(false);
+  const [users, setUsers] = useState([])
   const passwordRef = useRef();
   const startupRef = useRef();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getUsersArray()
+  }, [])
+
+  const getUsersArray = async () => {
+    const currentUsers = await getUsers(localStorage.getItem("confidentContractId"))
+    console.log(currentUsers)
+    setUsers(currentUsers)
+  }
 
   const validate = () => {
     const startupAddress = startupRef.current.value;
@@ -33,8 +44,6 @@ export default function AuthModal({ show, onHide }) {
     const managementPassword = passwordRef.current.value;
     setLoading(true);
 
-    await setPassword(startupAddress, managementPassword);
-
     localStorage.setItem("auth", true);
 
     setTimeout(async () => {
@@ -52,14 +61,15 @@ export default function AuthModal({ show, onHide }) {
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label htmlFor="address">Адрес стартапа</Form.Label>
-            <Form.Control
-              type="text"
-              id="address"
-              ref={startupRef}
-              onBlur={validate}
-              required
-            />
+            <Form.Label htmlFor="address">Адрес</Form.Label>
+            <Form.Select>
+              <option disabled>Выберите адрес</option>
+              {users.map((user) => (
+                <option key={user.value} value={user.value}>
+                  {user.name} {user.surname}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
           <Form.Group>
             <Form.Label htmlFor="password">Пароль</Form.Label>

@@ -3,9 +3,9 @@ export const getContractData = async (contractId) => {
     const response = await fetch("http://localhost:6862/contracts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: {
+      body: JSON.stringify({
         contracts: [contractId],
-      },
+      })
     });
 
     const contractData = await response.json();

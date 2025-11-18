@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import FetchAccounts from "./components/FetchAccounts";
 import { Link } from "react-router-dom";
 import AuthModal from "./components/forms/AuthModal";
 import { Button } from "react-bootstrap";
 import CreateRequestModal from "./components/forms/CreateRequestModal";
 import InitContractModal from "./components/forms/InitContractModal";
+import { getUsers } from "./utils/api/requests";
 
 function App() {
   const [modals, setModals] = useState({
@@ -54,7 +54,6 @@ function App() {
         </Link>
       </div>
       <p>Изменение аккаунтов происходит через МетаМаск</p>
-      <FetchAccounts />
       <AuthModal
         show={modals.auth && !modals.initContract}
         onHide={() => closeModal("auth")}

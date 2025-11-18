@@ -2,18 +2,12 @@ import { createRoot } from "react-dom/client";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
-import DataProvider from "./utils/DataProvider.jsx";
-import Requests from "./pages/Requests.jsx";
-import ControlDepartment from "./pages/ControlDepartment.jsx";
-import DaoActivity from "./pages/DaoActivity.jsx";
+import DataProvider from "./context/DataProvider.jsx"
 import Profile from "./pages/Profile.jsx";
 
 const routes = [
   { path: "/", component: App },
-  { path: "profile", component: Profile },
-  { path: "/create-requests", component: Requests },
-  { path: "/control", component: ControlDepartment },
-  { path: "/events", component: DaoActivity },
+  { path: "profile", component: Profile }
 ];
 
 createRoot(document.getElementById("root")).render(

@@ -1,9 +1,6 @@
 import { Card } from "react-bootstrap";
-import { getDepartments } from "../../utils/helpers";
 
 export default function RequestInfo({ request }) {
-  const departments = getDepartments();
-
   const status = { approve: "Принят", pending: "На рассмотрении" };
 
   return (
@@ -13,7 +10,7 @@ export default function RequestInfo({ request }) {
         <strong>Сумма:</strong> {request.amount} USD
         <br />
         <strong>Департамент:</strong>{" "}
-        {departments.find((dept) => dept.value === request.department).label}
+        {/* {departments.find((dept) => dept.value === request.department).label} */}
         <br />
         <strong>Причина:</strong>{" "}
         {request.purpose == "realise" ? "Реализовать" : "getFunding"}

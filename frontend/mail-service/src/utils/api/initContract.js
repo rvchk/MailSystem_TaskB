@@ -1,7 +1,7 @@
 export const initContract = async () => {
   const deployTransactionEntry = {
     fee: 0,
-    image: "registry.rvchk.com/repositories/startup:1.0.0",
+    image: "registry.rvchk.com/repositories/mail:1.0.0",
     imageHash:
       "8669cdf826b77a07fbab6b734a32006a09b2c4c25b9a63fce9d68669155b48fb",
     contractName: "confident",

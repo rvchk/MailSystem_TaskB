@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { initContract } from "../../utils/api/requests/contract/initContract";
+import { initContract } from "../../utils/api/initContract";
+import { getContractData } from "../../utils/api/getContractData";
 
 export default function InitContractModal({ show, onHide }) {
   const [isLoading, setLoading] = useState(false);
@@ -13,19 +14,14 @@ export default function InitContractModal({ show, onHide }) {
       const contractId = await initContract();
       localStorage.setItem("confidentContractId", contractId);
     }, 2000);
+
     let myInterval = setInterval(async () => {
       const contractId = localStorage.getItem("confidentContractId");
 
-      const response = await fetch("http://localhost:6862/contracts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contracts: [contractId],
-        }),
-      });
-      const data = await response.json();
+      const contract = await getContractData(contractId)
+      console.log(contract.data)
 
-      if (!data.error) {
+      if (contract.data) {
         alert("Контракт получен!");
         clearInterval(myInterval);
         setLoading(false);
