@@ -4,7 +4,6 @@ import AuthModal from "./components/forms/AuthModal";
 import { Button } from "react-bootstrap";
 import CreateRequestModal from "./components/forms/CreateRequestModal";
 import InitContractModal from "./components/forms/InitContractModal";
-import { getUsers } from "./utils/api/requests";
 
 function App() {
   const [modals, setModals] = useState({
@@ -53,7 +52,6 @@ function App() {
           Все события
         </Link>
       </div>
-      <p>Изменение аккаунтов происходит через МетаМаск</p>
       <AuthModal
         show={modals.auth && !modals.initContract}
         onHide={() => closeModal("auth")}

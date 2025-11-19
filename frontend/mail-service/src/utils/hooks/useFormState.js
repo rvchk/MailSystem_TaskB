@@ -4,7 +4,6 @@ export const useFormState = (initialState) => {
   const [formData, setFormData] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -17,7 +16,6 @@ export const useFormState = (initialState) => {
   const resetForm = () => {
     setFormData(initialState);
     setError("");
-    setSuccess("");
   };
 
   return {
@@ -27,8 +25,6 @@ export const useFormState = (initialState) => {
     setLoading,
     error,
     setError,
-    success,
-    setSuccess,
     handleInputChange,
     resetForm
   };

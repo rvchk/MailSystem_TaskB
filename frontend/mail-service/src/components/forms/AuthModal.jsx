@@ -1,82 +1,93 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { getUsers } from "../../utils/api/requests";
+import { getUserRole } from "../../utils/helpers";
+import { useFormState } from "../../utils/hooks/useFormState"
 
 export default function AuthModal({ show, onHide }) {
-  const [error, setError] = useState("Заполните все поля");
-  const [isLoading, setLoading] = useState(false);
   const [users, setUsers] = useState([])
-  const passwordRef = useRef();
-  const startupRef = useRef();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getUsersArray()
-  }, [])
-
-  const getUsersArray = async () => {
-    const currentUsers = await getUsers(localStorage.getItem("confidentContractId"))
-    console.log(currentUsers)
-    setUsers(currentUsers)
-  }
+  const {
+    formData,
+    error,
+    setError,
+    handleInputChange,
+    resetForm
+  } = useFormState({
+    login: "",
+    password: ""
+  });
 
   const validate = () => {
-    const startupAddress = startupRef.current.value;
-    const managementPassword = passwordRef.current.value;
-
-    if (!startupAddress) {
-      setError("Заполните адрес");
-      return startupAddress;
+    if (!formData.login) {
+      setError("Выберите логин");
+      return formData.login;
     }
-    if (!managementPassword) {
+    if (!formData.password) {
       setError("Напишите пароль");
-      return managementPassword;
+      return formData.password;
     }
     setError("");
     return true;
   };
 
-  const initStartup = async (e) => {
+  useEffect(() => {
+    validate()
+    getUsersArray()
+  }, [])
+
+  const getUsersArray = async () => {
+    const currentUsers = await getUsers(localStorage.getItem("confidentContractId"))
+    setUsers(currentUsers)
+  }
+
+  const auth = async (e) => {
     e.preventDefault();
+    const userLogin = formData.login.split(" ").slice(-1).join("")
+    const user = users.find(user => user.surname == userLogin)
+    // if (user.password == formData.password) {
+    alert("Вы вошли в аккаунт")
+    localStorage.setItem("currentRole", getUserRole(user.userRole))
+    localStorage.setItem("login", userLogin)
+    navigate("/profile")
 
-    const startupAddress = startupRef.current.value;
-    const managementPassword = passwordRef.current.value;
-    setLoading(true);
-
-    localStorage.setItem("auth", true);
-
-    setTimeout(async () => {
-      setLoading(false);
-      navigate("/profile");
-      location.reload();
-    }, 3000);
+    resetForm()
+    // } else {
+    //   setError("Неправильный пароль");
+    // }
   };
 
   return (
     <Modal show={show} onHide={onHide} size="sm">
       <Modal.Header>
-        <Modal.Title className="mx-auto">Авторизация стартапа</Modal.Title>
+        <Modal.Title className="mx-auto">Вход в систему</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label htmlFor="address">Адрес</Form.Label>
-            <Form.Select>
-              <option disabled>Выберите адрес</option>
+            <Form.Label htmlFor="address">Логин</Form.Label>
+            <Form.Select
+              onChange={handleInputChange}
+              onBlur={validate}
+              name="login"
+            >
+              <option value="" selected disabled>Выберите адрес</option>
               {users.map((user) => (
-                <option key={user.value} value={user.value}>
-                  {user.name} {user.surname}
+                <option key={user.userBlockchain}>
+                  {getUserRole(user.userRole)} - {user.name} {user.surname}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="mt-3">
             <Form.Label htmlFor="password">Пароль</Form.Label>
             <Form.Control
+              className="w-100"
               type="text"
-              id="password"
-              ref={passwordRef}
+              name="password"
+              onChange={handleInputChange}
               onBlur={validate}
               required
             />
@@ -91,11 +102,11 @@ export default function AuthModal({ show, onHide }) {
       <Modal.Footer>
         <Button
           variant="primary"
-          disabled={error || isLoading}
-          onClick={initStartup}
+          disabled={error}
+          onClick={auth}
           className="w-100"
         >
-          {isLoading ? "Загрузка..." : "Задать пароль"}
+          Задать пароль
         </Button>
       </Modal.Footer>
     </Modal>

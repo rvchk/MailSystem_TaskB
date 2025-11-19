@@ -21,7 +21,7 @@ export default function InitContractModal({ show, onHide }) {
       const contract = await getContractData(contractId)
       console.log(contract.data)
 
-      if (contract.data) {
+      if (!contract.data.error) {
         alert("Контракт получен!");
         clearInterval(myInterval);
         setLoading(false);
