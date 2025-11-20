@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthModal from "./components/forms/AuthModal";
+import AuthModal from "./components/modals/AuthModal";
 import { Button } from "react-bootstrap";
-import InitContractModal from "./components/forms/InitContractModal";
+import InitContractModal from "./components/modals/InitContractModal";
 import RegisterModal from "./components/modals/RegisterModal";
 
 function App() {
@@ -18,8 +18,8 @@ function App() {
       setModals((prev) => ({ ...prev, initContract: true }));
     }
 
-    const status = localStorage.getItem("auth");
-    if (!status) {
+    const login = localStorage.getItem("login");
+    if (!login) {
       setModals((prev) => ({ ...prev, auth: true }));
     }
   }, []);

@@ -2,24 +2,33 @@ import { useEffect, useState } from "react";
 import { useData } from "../context/DataProvider";
 import { Button, Card, CardBody, Modal } from "react-bootstrap";
 import { getUserRole } from "../utils/helpers";
-import ChangeUserInfoModal from "../components/forms/ChangeUserInfoModal";
+import ChangeUserInfoModal from "../components/modals/ChangeUserInfoModal";
+import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
   const [user, setUser] = useState({})
   const [showModal, setShowModal] = useState(false)
+  const navigate = useNavigate()
+
   const { getUser } = useData();
+  
   useEffect(() => {
     getUserInfo()
   }, [])
 
   const getUserInfo = async () => {
     const user = await getUser()
-    console.log(user)
     setUser(user)
   }
 
   const changeUserInfo = async () => {
     setShowModal(true)
+  }
+
+  const logOut = () => {
+    localStorage.setItem("login", "")
+    localStorage.setItem("currentRole", "")
+    navigate("/")
   }
 
   return (
@@ -37,13 +46,12 @@ export default function Profile() {
           Изменить личные данные
         </Button>
       </Card>
-      <div className="mt-4">
-        <h2>Основная информация</h2>
-      </div>
+      <Button className="mt-3" variant="danger" onClick={logOut}>
+        Выйти из аккаунта
+      </Button>
       <ChangeUserInfoModal
         show={showModal}
         onHide={() => setShowModal(false)}
-        user={user}
       />
     </>
   );

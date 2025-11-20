@@ -8,8 +8,8 @@ import AdminPanel from "./pages/AdminPanel.jsx";
 
 const routes = createBrowserRouter([
   { path: "/", element: <App /> },
-  { path: "profile", component: <Profile /> },
-  { path: "admin", component: <AdminPanel /> }
+  { path: "/profile", element: <Profile /> },
+  { path: "/admin", element: <AdminPanel /> }
 ])
 
 createRoot(document.getElementById("root")).render(

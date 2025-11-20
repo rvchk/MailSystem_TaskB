@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useData } from "../context/DataProvider";
 import { Button, Card, CardBody, Modal } from "react-bootstrap";
 import { getUserRole } from "../utils/helpers";
-import ChangeUserInfoModal from "../components/forms/ChangeUserInfoModal";
+import ChangeUserInfoModal from "../components/modals/ChangeUserInfoModal";
 
 export default function AdminPanel() {
   const [user, setUser] = useState({})

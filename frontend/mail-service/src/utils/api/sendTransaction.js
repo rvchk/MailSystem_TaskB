@@ -1,7 +1,4 @@
-import { createTransactionParams } from "../helpers";
-
-export const sendTransaction = async (functionName, formData) => {
-  const args = createTransactionParams(formData)
+export const sendTransaction = async (functionName, args) => {
   
   const contractId = localStorage.getItem("confidentContractId");
   const transaction = {

@@ -1,7 +1,20 @@
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { useFormState } from "../../utils/hooks/useFormState"
+import { useData } from "../../context/DataProvider";
+import { useEffect, useState } from "react";
 
-export default function ChangeUserInfoModal({ show, onHide, user }) {
+export default function ChangeUserInfoModal({ show, onHide }) {
+  const [user, setUser] = useState({})
+  const { getUser } = useData();
+
+  useEffect(() => {
+    getUserInfo()
+  }, [])
+
+  const getUserInfo = async () => {
+    const user = await getUser()
+    setUser(user)
+  }
 
   const {
     formData,
@@ -15,7 +28,6 @@ export default function ChangeUserInfoModal({ show, onHide, user }) {
     password: user.password,
     adress: user.userAddress,
   });
-  console.log(formData)
 
   const validate = () => {
     if (!formData.login) {
