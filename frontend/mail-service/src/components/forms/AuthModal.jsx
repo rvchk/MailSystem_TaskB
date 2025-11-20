@@ -106,7 +106,7 @@ export default function AuthModal({ show, onHide }) {
           onClick={auth}
           className="w-100"
         >
-          Задать пароль
+          Войти
         </Button>
       </Modal.Footer>
     </Modal>

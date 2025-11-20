@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthModal from "./components/forms/AuthModal";
 import { Button } from "react-bootstrap";
-import CreateRequestModal from "./components/forms/CreateRequestModal";
 import InitContractModal from "./components/forms/InitContractModal";
+import RegisterModal from "./components/modals/RegisterModal";
 
 function App() {
   const [modals, setModals] = useState({
     initContract: false,
     auth: false,
-    request: false,
+    register: false
   });
 
   useEffect(() => {
@@ -39,30 +39,28 @@ function App() {
         <Button className="routeLink" onClick={() => openModal("auth")}>
           Авторизация
         </Button>
-        <Link className="routeLink" to="/profile">
-          Профиль
-        </Link>
-        <Button className="routeLink" onClick={() => openModal("request")}>
-          Создать требования
+        <Button className="routeLink" onClick={() => openModal("register")}>
+          Регистрация
         </Button>
-        <Link className="routeLink" to="/control">
-          Отдел управления
-        </Link>
-        <Link className="routeLink" to="/events">
-          Все события
-        </Link>
+        {localStorage.getItem("login") && (
+          <>
+            <Link className="routeLink" to="/profile">
+              Профиль
+            </Link>
+          </>
+        )}
+
       </div>
       <AuthModal
         show={modals.auth && !modals.initContract}
         onHide={() => closeModal("auth")}
       />
+      <RegisterModal
+        show={modals.register && !modals.initContract}
+        onHide={() => closeModal("register")}
+      />
       <InitContractModal
         show={modals.initContract}
-        onHide={() => closeModal("initContract")}
-      />
-      <CreateRequestModal
-        show={modals.request}
-        onHide={() => closeModal("request")}
       />
     </div>
   );
