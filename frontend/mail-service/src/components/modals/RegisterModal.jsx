@@ -3,19 +3,18 @@ import { Modal } from "react-bootstrap";
 import { sendTransaction } from "../../utils/api";
 import CustomForm from "../CustomForm";
 import { registerFormConfig } from "../../utils/formConfigs";
+import { postOffices } from "../../utils/helpers";
 
 export default function RegisterModal({ show, onHide }) {
   const navigate = useNavigate();
 
-  const handleRegister = async (e, formData) => {
-    e.preventDefault();
-    const userLogin = formData.login.split(" ").slice(-1).join("")
+  const handleRegister = async (formData) => {
 
     await sendTransaction("register", {
       ...formData,
       userAddress: parseInt(formData.userAddress.split(" ")[0])
     })
-    localStorage.setItem("login", userLogin)
+    localStorage.setItem("login", formData.middleName)
     navigate("/profile")
   };
 
@@ -26,7 +25,7 @@ export default function RegisterModal({ show, onHide }) {
       </Modal.Header>
       <Modal.Body>
         <CustomForm
-          {...registerFormConfig}
+          {...registerFormConfig(Object.entries(postOffices))}
           onSubmit={handleRegister}
         />
       </Modal.Body>

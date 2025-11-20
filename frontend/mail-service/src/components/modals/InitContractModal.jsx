@@ -19,7 +19,6 @@ export default function InitContractModal({ show, onHide }) {
       const contractId = localStorage.getItem("confidentContractId");
 
       const contract = await getContractData(contractId)
-      console.log(contract.data)
 
       if (!contract.data.error) {
         alert("Контракт получен!");

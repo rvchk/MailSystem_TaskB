@@ -21,7 +21,6 @@ export default function AuthModal({ show, onHide }) {
 
   const handleAuth = async (formData) => {
     const userLogin = formData.login.split(" ").slice(-1).join("")
-    console.log(userLogin)
     const user = users.find(user => user.surname == userLogin)
     // if (user.password == formData.password) {
     alert("Вы вошли в аккаунт")
@@ -41,7 +40,7 @@ export default function AuthModal({ show, onHide }) {
       </Modal.Header>
       <Modal.Body>
         <CustomForm
-          {...loginFormConfig}
+          {...loginFormConfig(users)}
           onSubmit={handleAuth}
         />
       </Modal.Body>

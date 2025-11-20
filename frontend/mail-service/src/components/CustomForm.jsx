@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useFormState } from "../utils/hooks";
 import { useValidation } from "../utils/hooks";
+import { sendTransaction } from "../utils/api";
 
 export default function CustomForm({
   fields,
   onSubmit,
+  transactionMethod,
   submitText = "Отправить",
   loadingText = "Отправка...",
   initialData = {}
@@ -30,8 +32,15 @@ export default function CustomForm({
     setLoading(true);
 
     try {
-      await onSubmit(formData);
-      resetForm();
+      if (onSubmit) {
+        await onSubmit(formData);
+        resetForm();
+
+      }
+      else if (transactionMethod) {
+        await sendTransaction(transactionMethod, formData)
+        resetForm();
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -53,7 +62,7 @@ export default function CustomForm({
       case 'select':
         return (
           <Form.Select {...commonProps}>
-            <option value="">{field.placeholder || `Выберите ${field.label}`}</option>
+            <option value="" disabled>{field.placeholder || `Выберите ${field.label}`}</option>
             {field.options?.map(option => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -95,7 +104,6 @@ export default function CustomForm({
         );
     }
   };
-
   const isFormValid = fields.every(field =>
     !field.required || formData[field.name]
   );

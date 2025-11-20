@@ -1,49 +1,50 @@
-import { useEffect, useState } from "react";
-import { useData } from "../context/DataProvider";
-import { Button, Card, CardBody, Modal } from "react-bootstrap";
-import { getUserRole } from "../utils/helpers";
-import ChangeUserInfoModal from "../components/modals/ChangeUserInfoModal";
+import { useState } from "react";
+import { Button } from "react-bootstrap";
+import ChangePostIdModal from "../components/admin/ChangePostIdModal";
+import RegisterEmployeeModal from "../components/admin/RegisterEmployeeModal";
+import RemoveEmployeeModal from "../components/admin/RemoveEmployeeModal";
 
 export default function AdminPanel() {
-  const [user, setUser] = useState({})
-  const [showModal, setShowModal] = useState(false)
-  const { getUser } = useData();
-  useEffect(() => {
-    getUserInfo()
-  }, [])
 
-  const getUserInfo = async () => {
-    const user = await getUser()
-    console.log(user)
-    setUser(user)
-  }
+  const [modals, setModals] = useState({
+    registration: false,
+    deletion: false,
+    changePost: false
+  });
 
-  const changeUserInfo = async () => {
-    setShowModal(true)
-  }
+  const openModal = (modalName) => {
+    setModals((prev) => ({ ...prev, [modalName]: true }));
+  };
+
+  const closeModal = (modalName) => {
+    setModals((prev) => ({ ...prev, [modalName]: false }));
+  };
 
   return (
     <>
-      <h1>Профиль</h1>
-      <Card>
-        <h4>{user.surname} {user.name} {user.middleName}</h4>
-        <CardBody className="text-left">
-          <h5>Адрес: {user.userAddress}</h5>
-          <h5>Баланс: {user.userBalance}</h5>
-          <h5>Роль: {getUserRole(user.userRole)}</h5>
-        </CardBody>
-
-        <Button onClick={changeUserInfo}>
-          Изменить личные данные
+      <h1>Панель управления админа</h1>
+      <div className="links">
+        <Button className="routeLink" onClick={() => openModal("registration")}>
+          Зарегистрировать сотрудника
         </Button>
-      </Card>
-      <div className="mt-4">
-        <h2>Основная информация</h2>
+        <Button className="routeLink" onClick={() => openModal("deletion")}>
+          Удалить сотрудника
+        </Button>
+        <Button className="routeLink" onClick={() => openModal("changePost")}>
+          Изменить адрес сотрудника
+        </Button>
       </div>
-      <ChangeUserInfoModal
-        show={showModal}
-        onHide={() => setShowModal(false)}
-        user={user}
+      <ChangePostIdModal
+        show={modals.changePost}
+        onHide={() => closeModal("changePost")}
+      />
+      <RegisterEmployeeModal
+        show={modals.registration}
+        onHide={() => closeModal("registration")}
+      />
+      <RemoveEmployeeModal
+        show={modals.deletion}
+        onHide={() => closeModal("deletion")}
       />
     </>
   );

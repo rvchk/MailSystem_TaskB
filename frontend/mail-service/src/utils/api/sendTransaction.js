@@ -1,5 +1,11 @@
-export const sendTransaction = async (functionName, args) => {
-  
+export const sendTransaction = async (functionName, data) => {
+
+  const args = Object.entries(data).map(([key, value]) => ({
+    type: typeof value,
+    key: key,
+    value: value.toString(),
+  }));
+
   const contractId = localStorage.getItem("confidentContractId");
   const transaction = {
     contractId: contractId,

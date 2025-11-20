@@ -49,6 +49,13 @@ function App() {
             </Link>
           </>
         )}
+        {localStorage.getItem("currentRole") == "Администратор" && (
+          <>
+            <Link className="routeLink" to="/admin">
+              Панель Администратора
+            </Link>
+          </>
+        )}
 
       </div>
       <AuthModal
