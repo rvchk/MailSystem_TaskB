@@ -5,22 +5,30 @@ const DataContext = createContext();
 
 export default function DataProvider({ children }) {
   const [user, setUser] = useState({})
-  const [users, setUsers] = useState({})
-
+  const [users, setUsers] = useState([])
+  const [employees, setEmployees] = useState([])
+  
   useEffect(() => {
-    getUser()
+    getInfo()
   }, [])
 
-  const getUser = async () => {
-    const users = await getUsers(localStorage.getItem("confidentContractId"))
-    setUsers(users)
-    const userLogin = localStorage.getItem("login").split(" ").slice(-1).join("")
-    setUser(users.find(user => user.surname == userLogin))
-    return users.find(user => user.surname == userLogin)
+  const getInfo = async () => {
+    try {
+      const users = await getUsers(localStorage.getItem("confidentContractId"))
+      setUsers(users)
+
+      const employees = users?.filter(user => user.userRole == "POST_OFFICE_EMPLOYEE")
+      setEmployees(employees)
+
+      const userLogin = localStorage.getItem("login").split(" ").slice(-1).join("")
+      setUser(users.find(user => user.surname == userLogin))
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
-    <DataContext.Provider value={{ getUser, user, users }}>
+    <DataContext.Provider value={{ user, users, employees }}>
       {children}
     </DataContext.Provider>
   );

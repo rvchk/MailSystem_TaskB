@@ -1,24 +1,19 @@
-import { useState } from "react";
 import { Button } from "react-bootstrap";
 import ChangePostIdModal from "../components/admin/ChangePostIdModal";
 import RegisterEmployeeModal from "../components/admin/RegisterEmployeeModal";
 import RemoveEmployeeModal from "../components/admin/RemoveEmployeeModal";
+import { useModal } from "../utils/hooks/useModal";
+import { useData } from "../context/DataProvider";
+import { postOffices } from "../utils/helpers";
 
 export default function Parcels() {
+  const { employees, users } = useData()
 
-  const [modals, setModals] = useState({
+  const { modals, openModal, closeModal } = useModal({
     confirmParcel: false,
     deletion: false,
     changePost: false
   });
-
-  const openModal = (modalName) => {
-    setModals((prev) => ({ ...prev, [modalName]: true }));
-  };
-
-  const closeModal = (modalName) => {
-    setModals((prev) => ({ ...prev, [modalName]: false }));
-  };
 
   return (
     <>
@@ -37,14 +32,19 @@ export default function Parcels() {
       <ChangePostIdModal
         show={modals.changePost}
         onHide={() => closeModal("changePost")}
+        employees={employees}
+        postOffices={postOffices}
       />
       <RegisterEmployeeModal
         show={modals.registration}
         onHide={() => closeModal("registration")}
+        users={users}
+        postOffices={postOffices}
       />
       <RemoveEmployeeModal
         show={modals.deletion}
         onHide={() => closeModal("deletion")}
+        employees={employees}
       />
     </>
   );

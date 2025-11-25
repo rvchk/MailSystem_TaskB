@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useData } from "../context/DataProvider";
 import { Button, Card, CardBody, Modal } from "react-bootstrap";
 import { getUserRole } from "../utils/helpers";
@@ -6,20 +6,10 @@ import ChangeUserInfoModal from "../components/modals/ChangeUserInfoModal";
 import { useNavigate } from "react-router-dom";
 
 export default function Profile() {
-  const [user, setUser] = useState({})
+  const { user } = useData();
+
   const [showModal, setShowModal] = useState(false)
   const navigate = useNavigate()
-
-  const { getUser } = useData();
-
-  useEffect(() => {
-    getUserInfo()
-  }, [])
-
-  const getUserInfo = async () => {
-    const user = await getUser()
-    setUser(user)
-  }
 
   const changeUserInfo = async () => {
     setShowModal(true)

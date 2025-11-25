@@ -1,11 +1,8 @@
 import { Modal } from "react-bootstrap";
 import CustomForm from "../CustomForm";
 import { addEmployeeFormConfig } from "../../utils/formConfigs";
-import { postOffices } from "../../utils/helpers";
-import { useData } from "../../context/DataProvider";
 
-export default function RegisterEmployeeModal({ show, onHide }) {
-  const { users } = useData()
+export default function RegisterEmployeeModal({ show, onHide, users, postOffices }) {
 
   return (
     <Modal show={show} onHide={onHide} size="sm">

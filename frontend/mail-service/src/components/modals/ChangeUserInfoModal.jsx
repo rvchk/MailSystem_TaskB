@@ -4,7 +4,7 @@ import { useData } from "../../context/DataProvider";
 import { useEffect, useState } from "react";
 
 export default function ChangeUserInfoModal({ show, onHide }) {
-  const { getUser } = useData();
+  const { user } = useData();
   const [isLoading, setIsLoading] = useState(true);
 
   const {
@@ -12,7 +12,7 @@ export default function ChangeUserInfoModal({ show, onHide }) {
     error,
     setError,
     handleInputChange,
-    setFormData, // Добавляем эту функцию
+    setFormData,
   } = useFormState({
     name: "",
     surname: "",
@@ -30,15 +30,13 @@ export default function ChangeUserInfoModal({ show, onHide }) {
   const getUserInfo = async () => {
     try {
       setIsLoading(true);
-      const userData = await getUser();
-      
       // Обновляем форму данными пользователя
       setFormData({
-        name: userData.name || "",
-        surname: userData.surname || "",
-        middleName: userData.middleName || "",
-        password: userData.password || "",
-        adress: userData.userAddress || "",
+        name: user.name || "",
+        surname: user.surname || "",
+        middleName: user.middleName || "",
+        password: user.password || "",
+        adress: user.userAddress || "",
       });
     } catch (error) {
       console.error("Error loading user:", error);

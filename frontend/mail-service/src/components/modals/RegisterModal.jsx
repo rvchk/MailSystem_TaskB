@@ -7,8 +7,7 @@ import { useData } from "../../context/DataProvider";
 
 export default function RegisterModal({ show, onHide }) {
 
-  const { getUser, user } = useData();
-  console.log(user)
+  const { user } = useData();
 
   const handleRegister = async (formData) => {
     await sendTransaction("register", {
@@ -20,7 +19,6 @@ export default function RegisterModal({ show, onHide }) {
     alert("Регистрация идет, ждите...")
     
     setInterval(async () => {
-      const user = await getUser()
       if (user) location.reload()
     }, 2000);
   };

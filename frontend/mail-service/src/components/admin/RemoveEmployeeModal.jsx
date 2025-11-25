@@ -1,11 +1,8 @@
 import { Modal } from "react-bootstrap";
 import CustomForm from "../CustomForm";
 import { deleteEmployeeFormConfig } from "../../utils/formConfigs";
-import { useData } from "../../context/DataProvider";
 
-export default function RemoveEmployeeModal({ show, onHide }) {
-  const { users } = useData()
-  const employees = users?.filter(user => user.userRole == "POST_OFFICE_EMPLOYEE")
+export default function RemoveEmployeeModal({ show, onHide, employees }) {
 
   return (
     <Modal show={show} onHide={onHide} size="sm">
