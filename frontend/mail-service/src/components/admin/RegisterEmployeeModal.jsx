@@ -2,20 +2,10 @@ import { Modal } from "react-bootstrap";
 import CustomForm from "../CustomForm";
 import { addEmployeeFormConfig } from "../../utils/formConfigs";
 import { postOffices } from "../../utils/helpers";
-import { getUsers } from "../../utils/api/requests/user/getUsers";
-import { useEffect, useState } from "react";
+import { useData } from "../../context/DataProvider";
 
 export default function RegisterEmployeeModal({ show, onHide }) {
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    getUsersArray()
-  }, [])
-
-  const getUsersArray = async () => {
-    const currentUsers = await getUsers(localStorage.getItem("confidentContractId"))
-    setUsers(currentUsers)
-  }
+  const { users } = useData()
 
   return (
     <Modal show={show} onHide={onHide} size="sm">

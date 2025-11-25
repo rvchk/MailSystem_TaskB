@@ -414,7 +414,7 @@ export const editProfileFormConfig = (postOffices, currentUser) => ({
     },
     {
       name: "userAddress",
-      label: "Почтовое отделение",
+      label: "Адрес",
       type: "select",
       required: true,
       options: postOffices.map(office => ({
@@ -422,6 +422,14 @@ export const editProfileFormConfig = (postOffices, currentUser) => ({
         label: `${office.postOfficeId}`
       })),
       defaultValue: currentUser?.userAddress
+    },
+    {
+      name: "password",
+      label: "Пароль",
+      type: "password",
+      required: true,
+      placeholder: "Введите пароль",
+      defaultValue: currentUser?.password
     }
   ],
   submitText: "Сохранить изменения",

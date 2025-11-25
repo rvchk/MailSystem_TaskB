@@ -5,6 +5,7 @@ export const sendTransaction = async (functionName, data) => {
     key: key,
     value: value.toString(),
   }));
+  console.log(args)
 
   const contractId = localStorage.getItem("confidentContractId");
   const transaction = {
@@ -29,6 +30,8 @@ export const sendTransaction = async (functionName, data) => {
     contractVersion: 1,
   };
 
+  console.log(transaction)
+
   try {
     const response = await fetch(
       "http://localhost:6862/transactions/signAndBroadcast",
@@ -38,6 +41,7 @@ export const sendTransaction = async (functionName, data) => {
         body: JSON.stringify(transaction),
       },
     );
+    console.log(response)
 
     if (!response.ok) {
       const errorData = await response.json();

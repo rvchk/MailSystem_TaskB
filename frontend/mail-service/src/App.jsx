@@ -11,6 +11,7 @@ function App() {
     auth: false,
     register: false
   });
+  const role = localStorage.getItem("currentRole")
 
   useEffect(() => {
     const contractId = localStorage.getItem("confidentContractId");
@@ -36,23 +37,40 @@ function App() {
     <div>
       <h1>Интерфейс приложения</h1>
       <div className="links">
-        <Button className="routeLink" onClick={() => openModal("auth")}>
-          Авторизация
-        </Button>
-        <Button className="routeLink" onClick={() => openModal("register")}>
-          Регистрация
-        </Button>
-        {localStorage.getItem("login") && (
+        {!role && (
+          <>
+            <Button className="routeLink" onClick={() => openModal("auth")}>
+              Авторизация
+            </Button>
+            <Button className="routeLink" onClick={() => openModal("register")}>
+              Регистрация
+            </Button>
+          </>
+        )}
+        {role && (
           <>
             <Link className="routeLink" to="/profile">
               Профиль
             </Link>
+            <Link className="routeLink" to="/parcels">
+              Посылки
+            </Link>
+            <Link className="routeLink" to="/moneyTransfers">
+              Переводы
+            </Link>
           </>
         )}
-        {localStorage.getItem("currentRole") == "Администратор" && (
+        {role == "Администратор" && (
           <>
             <Link className="routeLink" to="/admin">
               Панель Администратора
+            </Link>
+          </>
+        )}
+        {role == "Сотрудник" && (
+          <>
+            <Link className="routeLink" to="/employee">
+              Панель сотрудника
             </Link>
           </>
         )}

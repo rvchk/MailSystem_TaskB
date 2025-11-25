@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Alert, Button, Form, Modal } from "react-bootstrap";
 import { useFormState } from "../../utils/hooks/useFormState"
 import { sendTransaction } from "../../utils/api";
 import { getOffice, postOffices } from "../../utils/helpers/getOffice";
 
 export default function CreateParcelModal({ show, onHide }) {
-  const navigate = useNavigate();
 
   const {
     formData,
@@ -48,7 +46,6 @@ export default function CreateParcelModal({ show, onHide }) {
   const register = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const userLogin = formData.login.split(" ").slice(-1).join("")
     try {
       await sendTransaction("initiateSendParcel", formData)
       resetForm()

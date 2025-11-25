@@ -4,10 +4,10 @@ import ChangePostIdModal from "../components/admin/ChangePostIdModal";
 import RegisterEmployeeModal from "../components/admin/RegisterEmployeeModal";
 import RemoveEmployeeModal from "../components/admin/RemoveEmployeeModal";
 
-export default function AdminPanel() {
+export default function MoneyTransfers() {
 
   const [modals, setModals] = useState({
-    registration: false,
+    confirmParcel: false,
     deletion: false,
     changePost: false
   });
@@ -24,8 +24,8 @@ export default function AdminPanel() {
     <>
       <h1>Панель управления админа</h1>
       <div className="buttons">
-        <Button variant="primary" onClick={() => openModal("registration")}>
-          Зарегистрировать сотрудника
+        <Button variant="primary" onClick={() => openModal("confirmParcel")}>
+          Подтвердить посылку
         </Button>
         <Button variant="primary" onClick={() => openModal("deletion")}>
           Удалить сотрудника

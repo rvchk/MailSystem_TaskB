@@ -11,7 +11,7 @@ export default function Profile() {
   const navigate = useNavigate()
 
   const { getUser } = useData();
-  
+
   useEffect(() => {
     getUserInfo()
   }, [])
@@ -45,10 +45,10 @@ export default function Profile() {
         <Button onClick={changeUserInfo}>
           Изменить личные данные
         </Button>
+        <Button className="mt-3" variant="danger" onClick={logOut}>
+          Выйти из аккаунта
+        </Button>
       </Card>
-      <Button className="mt-3" variant="danger" onClick={logOut}>
-        Выйти из аккаунта
-      </Button>
       <ChangeUserInfoModal
         show={showModal}
         onHide={() => setShowModal(false)}

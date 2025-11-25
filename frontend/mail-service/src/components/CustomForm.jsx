@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { Alert, Button, Form } from "react-bootstrap";
 import { useFormState } from "../utils/hooks";
-import { useValidation } from "../utils/hooks";
 import { sendTransaction } from "../utils/api";
 
 export default function CustomForm({
@@ -23,10 +21,6 @@ export default function CustomForm({
   } = useFormState(initialData);
 
   // Валидация при изменении формы
-  useEffect(() => {
-    useValidation(formData, fields, setError);
-  }, [formData, fields, setError]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -35,7 +29,6 @@ export default function CustomForm({
       if (onSubmit) {
         await onSubmit(formData);
         resetForm();
-
       }
       else if (transactionMethod) {
         await sendTransaction(transactionMethod, formData)

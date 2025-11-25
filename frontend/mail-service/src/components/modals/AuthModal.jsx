@@ -1,36 +1,23 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
-import { getUsers } from "../../utils/api/requests";
 import { getUserRole } from "../../utils/helpers";
 import { loginFormConfig } from "../../utils/formConfigs";
 import CustomForm from "../CustomForm";
+import { useData } from "../../context/DataProvider";
 
 export default function AuthModal({ show, onHide }) {
-  const [users, setUsers] = useState([])
+  const { users } = useData()
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getUsersArray()
-  }, [])
-
-  const getUsersArray = async () => {
-    const currentUsers = await getUsers(localStorage.getItem("confidentContractId"))
-    setUsers(currentUsers)
-  }
 
   const handleAuth = async (formData) => {
     const userLogin = formData.login.split(" ").slice(-1).join("")
     const user = users.find(user => user.surname == userLogin)
-    // if (user.password == formData.password) {
-    alert("Вы вошли в аккаунт")
-    localStorage.setItem("currentRole", getUserRole(user.userRole))
-    localStorage.setItem("login", userLogin)
-    navigate("/profile")
-
-    // } else {
-    //   setError("Неправильный пароль");
-    // }
+    if (user.password == formData.password) {
+      alert("Вы вошли в аккаунт")
+      localStorage.setItem("currentRole", getUserRole(user.userRole))
+      localStorage.setItem("login", userLogin)
+      navigate("/profile")
+    } else alert("Неправильный пароль")
   };
 
   return (

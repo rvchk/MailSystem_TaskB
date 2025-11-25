@@ -1,21 +1,28 @@
-import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { sendTransaction } from "../../utils/api";
 import CustomForm from "../CustomForm";
 import { registerFormConfig } from "../../utils/formConfigs";
 import { postOffices } from "../../utils/helpers";
+import { useData } from "../../context/DataProvider";
 
 export default function RegisterModal({ show, onHide }) {
-  const navigate = useNavigate();
+
+  const { getUser, user } = useData();
+  console.log(user)
 
   const handleRegister = async (formData) => {
-
     await sendTransaction("register", {
       ...formData,
-      userAddress: parseInt(formData.userAddress.split(" ")[0])
+      userAddress: formData.userAddress.split(" ")[0],
     })
     localStorage.setItem("login", formData.middleName)
-    navigate("/profile")
+
+    alert("Регистрация идет, ждите...")
+    
+    setInterval(async () => {
+      const user = await getUser()
+      if (user) location.reload()
+    }, 2000);
   };
 
   return (
