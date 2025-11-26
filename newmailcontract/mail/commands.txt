@@ -18,220 +18,149 @@
     "feeAssetId" : null
 }
 
-Создание стартапа
-{
-    "fee": 0,
-    "contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
-    "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
-    "password": "3YOrynRZCRmx7P71V9JFUg",
-    "params": [
-      {
-         "type" : "string",
-         "value" : "createStartup",
-         "key" : "action"
-      },
-      {
-        "type": "string",
-        "key": "address",
-        "value": "123"
-      }
-    ],
-    "type": 104,
-    "version": 2,
-    "feeAssetId" : null,
-    "contractVersion": 1
-}
-
-Создание пароля
+Регистрация
 {
   "fee": 0,
-  "contractId": "CMHnMigqnhznwgAPJiRxV7RwhsPHWXtmCEVKUnKENYTh",
-  "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
-  "password": "2a80iqy2SZpuklIwx-Ph2A",
-  "params": [
-      {
-         "type" : "string",
-         "value" : "setPassword",
-         "key" : "action"
-      },
-      {
-        "type": "string",
-        "key": "address",
-        "value": "123"
-      },
-      {
-        "type": "string",
-        "key": "password",
-        "value": "123"
-      }
-  ],
-  "type": 104,
-  "version": 2,
-  "feeAssetId" : null,
-  "contractVersion": 1
- }
-
-Распределение средств
-{
-  "fee": 0,
-  "contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
+  "contractId": "HBfChVHfjpjxWV2viJRuYGMNNDDMA6hS4ihDtymNVtKP",
   "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
   "password": "3YOrynRZCRmx7P71V9JFUg",
   "params": [
-      {
-         "type" : "string",
-         "value" : "distributeFundsInsideStartup",
-         "key" : "action"
-      },
-      {
-        "type": "string",
-        "key": "address",
-        "value": "123"
-      },
-      {
-        "type": "string",
-        "key": "totalAmount",
-        "value": "10000"
-      }
+    {
+      "type": "string",
+      "value": "register",
+      "key": "action"
+    },
+    {
+      "type": "string",
+      "key": "name",
+      "value": "Иван"
+    },
+    {
+      "type": "string",
+      "key": "surname",
+      "value": "Иванов"
+    },
+    {
+      "type": "string",
+      "key": "middleName",
+      "value": "Иванович"
+    },
+    {
+      "type": "string",
+      "key": "password",
+      "value": "password123"
+    },
+    {
+      "type": "integer",
+      "key": "userAddress",
+      "value": 344000
+    },
+    {
+      "type": "integer",
+      "key": "userBalance",
+      "value": 50
+    }
   ],
   "type": 104,
   "version": 2,
-  "feeAssetId" : null,
+  "feeAssetId": null,
   "contractVersion": 1
- }
-
- Отправить запрос
-{
-"fee": 0,
-"contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
-"sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
-"password": "3YOrynRZCRmx7P71V9JFUg",
-"params": [
-   {
-      "type" : "string",
-      "value" : "sendRealisationRequest",
-      "key" : "action"
-   },
-   {
-     "type": "string",
-     "key": "address",
-     "value": "123"
-   },
-   {
-     "type": "string",
-     "key": "department",
-     "value": "development"
-   },
-    {
-     "type": "string",
-     "key": "purpose",
-     "value": "realise"
-   },
-    {
-     "type": "string",
-     "key": "percentage",
-     "value": "10"
-   },
-    {
-     "type": "string",
-     "key": "fromStartBalance",
-     "value": "false"
-   }
-],
-    "type": 104,
-    "version": 2,
-    "feeAssetId" : null,
-    "contractVersion": 1
 }
 
-Передача средств из менеджента
+Создание посылки
 {
   "fee": 0,
-  "contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
+  "contractId": "3R1LEA33qGkpcEgasKDVXihzpEscTXeqTsn9j6NUYvrE",
   "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
   "password": "3YOrynRZCRmx7P71V9JFUg",
   "params": [
-      {
-         "type" : "string",
-         "value" : "transferFromManagement",
-         "key" : "action"
-      },
-      {
-        "type": "string",
-        "key": "address",
-        "value": "123"
-      },
-      {
-        "type": "string",
-        "key": "department",
-        "value": "marketing"
-      },
-      {
-        "type": "string",
-        "key": "percentage",
-        "value": "10"
-      }
+    {
+      "type": "string",
+      "value": "initiateSendParcel",
+      "key": "action"
+    },
+    {
+      "type": "string",
+      "key": "login",
+      "value": "Антонов"
+    },
+    {
+      "type": "integer",
+      "key": "parcelTo",
+      "value": 347900
+    },
+    {
+      "type": "string",
+      "key": "parcelType",
+      "value": "PARCEL"
+    },
+    {
+      "type": "string",
+      "key": "parcelClass",
+      "value": "FIRST"
+    },
+    {
+      "type": "integer",
+      "key": "parcelWeight",
+      "value": 2
+    },
+    {
+      "type": "string",
+      "key": "parcelBlockchainTo",
+      "value": "Семенов"
+    },
+    {
+      "type": "string",
+      "key": "currentDate",
+      "value": "25122024"
+    },
+    {
+      "type": "string",
+      "key": "dailyCount",
+      "value": "1"
+    }
   ],
   "type": 104,
   "version": 2,
-  "feeAssetId" : null,
+  "feeAssetId": null,
   "contractVersion": 1
- }
+}
 
- Подтверждение запроса
- {
-   "fee": 0,
-   "contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
-   "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
-   "password": "3YOrynRZCRmx7P71V9JFUg",
-   "params": [
-       {
-          "type" : "string",
-          "value" : "approveRequest",
-          "key" : "action"
-       },
-       {
-         "type": "string",
-         "key": "address",
-         "value": "123"
-       },
-       {
-         "type": "string",
-         "key": "requestId",
-         "value": "req_906"
-       },
-       {
-         "type": "string",
-         "key": "operation",
-         "value": "approve"
-       }
-   ],
-   "type": 104,
-   "version": 2,
-   "feeAssetId" : null,
-   "contractVersion": 1
-  }
-
- Создать новый запрос при малом балансе
-  {
-    "fee": 0,
-    "contractId": "7dDoiADkmxYdDxMM6HGM19xV98Skdnw4FFpeTx7amMJn",
-    "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
-    "password": "3YOrynRZCRmx7P71V9JFUg",
-    "params": [
-        {
-           "type" : "string",
-           "value" : "checkAndCreateRefundRequest",
-           "key" : "action"
-        },
-        {
-          "type": "string",
-          "key": "address",
-          "value": "123"
-        }
-    ],
-    "type": 104,
-    "version": 2,
-    "feeAssetId" : null,
-    "contractVersion": 1
-   }
+Подтверждение посылки
+{
+  "fee": 0,
+  "contractId": "3R1LEA33qGkpcEgasKDVXihzpEscTXeqTsn9j6NUYvrE",
+  "sender": "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
+  "password": "3YOrynRZCRmx7P71V9JFUg",
+  "params": [
+    {
+      "type": "string",
+      "value": "confirmParcel",
+      "key": "action"
+    },
+    {
+      "type": "string",
+      "key": "login",
+      "value": "Антонов"
+    },
+    {
+      "type": "string",
+      "key": "trackId",
+      "value": "RR251220241344000347900"
+    },
+    {
+      "type": "string",
+      "key": "parcelDeclaredValue",
+      "value": "100"
+    },
+    {
+      "type": "integer",
+      "key": "nextPostOfficeId",
+      "value": 344000
+    }
+  ],
+  "type": 104,
+  "version": 2,
+  "feeAssetId": null,
+  "contractVersion": 1
+}

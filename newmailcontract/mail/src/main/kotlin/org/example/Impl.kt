@@ -28,12 +28,12 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         contractState.put("CONTRACT_CREATOR", call.sender.asBase58String())
 
         users.put(
-            call.sender.asBase58String(),
+            "Семенов",
             User(
                 "Семен",
                 "Семенов",
                 "Семенович",
-                call.sender.asBase58String(),
+                "123",
                 344000,
                 50.0,
                 UserRole.ADMIN
@@ -45,98 +45,90 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             "Петр",
             "Петров",
             "Петрович",
-            userBlockchain = "RR344000_1",
+            "111",
             userAddress = 344000,
             userBalance = 50.0,
             userRole = UserRole.POST_OFFICE_EMPLOYEE,
             employeePostId = 344000
         )
-        users.put(rostovEmployee.userBlockchain!!, rostovEmployee)
+        users.put(rostovEmployee.surname, rostovEmployee)
 
         // Сотрудник в Таганроге - Антонов Антон Антонович
         val taganrogEmployee = User(
             "Антон",
             "Антонов",
             "Антонович",
-            userBlockchain = "RR347900_1",
+            "222",
             userAddress = 347900,
             userBalance = 50.0,
             userRole = UserRole.POST_OFFICE_EMPLOYEE,
             employeePostId = 347900
         )
-        users.put(taganrogEmployee.userBlockchain!!, taganrogEmployee)
+        users.put(taganrogEmployee.surname, taganrogEmployee)
 
         // Обычный пользователь - Юрьев Юрий Юрьевич
         val regularUser = User(
             "Юрий",
             "Юрьев",
             "Юрьевич",
-            userBlockchain = "user_1",
+            "333",
             userAddress = 346781, // Азов
             userBalance = 50.0,
             userRole = UserRole.USER
         )
-        users.put(regularUser.userBlockchain!!, regularUser)
+        users.put(regularUser.surname, regularUser)
     }
 
-    override fun register(name: String, surname: String, middleName: String, userAddress: Int, userBalance: Int) {
-        if (users.tryGet(call.sender.asBase58String()).isPresent) {
-            throw IllegalStateException("Пользователь уже существует!")
-        }
-
+    override fun register(
+        name: String,
+        surname: String,
+        middleName: String,
+        password: String,
+        userAddress: String,
+        userBalance: String
+    ) {
         val newUser =
-            User(name, surname, middleName, call.sender.asBase58String(), userAddress, userBalance.toDouble(), UserRole.USER, 0)
-        users.put(call.sender.asBase58String(), newUser)
+            User(name, surname, middleName, password, userAddress.toInt(), userBalance.toDouble(), UserRole.USER, 0)
+        users.put(surname, newUser)
     }
 
     override fun registerEmployee(
         name: String,
         surname: String,
         middleName: String,
-        employeeBlockchain: String,
+        password: String,
         userAddress: Int,
         userBalance: Int,
         userPostId: Int
     ) {
-        if (users.tryGet(call.sender.asBase58String()).get().userRole != UserRole.ADMIN) {
+        if (users.tryGet(surname).get().userRole != UserRole.ADMIN) {
             throw IllegalStateException("Вы не администратор!")
-        }
-        if (users.tryGet(employeeBlockchain).isPresent) {
-            throw IllegalStateException("Сотрудник уже существует!")
         }
 
         val newUser = User(
             name,
             surname,
             middleName,
-            employeeBlockchain,
+            password,
             userAddress,
             userBalance.toDouble(),
             UserRole.POST_OFFICE_EMPLOYEE,
             userPostId
         )
-        users.put(employeeBlockchain, newUser)
+        users.put(surname, newUser)
     }
 
-    override fun changeEmployeePostId(employeeBlockchain: String, postId: Int) {
-        if (users.tryGet(call.sender.asBase58String()).get().userRole != UserRole.ADMIN) {
-            throw IllegalStateException("Вы не администратор!")
-        }
-
-        val employee = users.tryGet(employeeBlockchain).orElseThrow {
+    override fun changeEmployeePostId(login: String, postId: Int) {
+        val employee = users.tryGet(login).orElseThrow {
             IllegalStateException("Сотрудник не найден!")
         }
 
         employee.employeePostId = postId
-        users.put(employeeBlockchain, employee)
+        users.put(login, employee)
     }
 
-    override fun deleteEmployee(employeeBlockchain: String) {
-        if (users.tryGet(call.sender.asBase58String()).get().userRole != UserRole.ADMIN) {
-            throw IllegalStateException("Вы не администратор!")
-        }
-
-        val employee = users.tryGet(employeeBlockchain).orElseThrow {
+    override fun deleteEmployee(login: String) {
+        val employee = users.tryGet(login).orElseThrow {
             IllegalStateException("Сотрудник не найден!")
         }
 
@@ -145,7 +137,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         }
 
         employee.userRole = UserRole.DELETED
-        users.put(employeeBlockchain, employee)
+        users.put(login, employee)
     }
 
     override fun createMoneyTransfer(moneyTransferTo: String, moneyTransferAmount: Int, moneyTransferLifeTime: Int) {
@@ -217,6 +209,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
     }
 
     override fun initiateSendParcel(
+        login: String,
         parcelTo: Int,
         parcelType: String,
         parcelClass: String,
@@ -241,7 +234,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             throw IllegalStateException("Почтовое отделение назначения не найдено!")
         }
 
-        val user = users.tryGet(call.sender.asBase58String()).orElseThrow {
+        val user = users.tryGet(login).orElseThrow {
             IllegalStateException("Вы не зарегистрированы")
         }
         val parcelFrom = user.userAddress
@@ -256,7 +249,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             parcelType = ParcelType.valueOf(parcelType),
             parcelClass = ParcelClass.valueOf(parcelClass),
             parcelWeight = parcelWeight.toDouble(),
-            parcelBlockchainFrom = user.userBlockchain,
+            parcelBlockchainFrom = user.surname,
             parcelBlockchainTo = parcelBlockchainTo,
             parcelCurrentOfficeId = parcelFrom,
             parcelCheckoutEmployees = listOf(),
@@ -271,8 +264,8 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         parcels.put(newParcel.parcelTrackNumber, newParcel)
     }
 
-    override fun confirmParcel(trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int) {
-        val currentUser = users.tryGet(call.sender.asBase58String()).orElseThrow {
+    override fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int) {
+        val currentUser = users.tryGet(login).orElseThrow {
             IllegalStateException("Вы не зарегистрированы")
         }
 
@@ -303,7 +296,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         }
 
         sender.userBalance -= finalCost
-        users.put(sender.userBlockchain!!, sender)
+        users.put(sender.surname, sender)
 
         val updatedParcel = parcel.copy(
             parcelConfirmStatus = ParcelStatus.CONFIRMED,
@@ -365,7 +358,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             throw IllegalStateException("Вы не зарегистрированы!")
         }
 
-        if (getter.userBlockchain != parcel.parcelBlockchainTo) {
+        if (getter.surname != parcel.parcelBlockchainTo) {
             throw IllegalStateException("Вы не являетесь получателем")
         }
 
@@ -388,9 +381,10 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         name: String,
         surname: String,
         middleName: String,
-        userAddress: Int,
+        password: String,
+        userAddress: String,
     ) {
-        val user = users.tryGet(call.sender.asBase58String()).orElseThrow {
+        val user = users.tryGet(surname).orElseThrow {
             IllegalStateException("Пользователь не найден!")
         }
 
@@ -398,9 +392,10 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             name = name,
             surname = surname,
             middleName = middleName,
-            userAddress = userAddress
+            password = password,
+            userAddress = userAddress.toInt()
         )
-        users.put(call.sender.asBase58String(), updatedUser)
+        users.put(surname, updatedUser)
     }
 
     private fun createParcelTrackNumber(from: Int, to: Int, date: String, dailyCount: String): String {

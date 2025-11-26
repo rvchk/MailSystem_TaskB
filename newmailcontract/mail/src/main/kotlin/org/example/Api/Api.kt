@@ -14,8 +14,9 @@ interface Api {
         name: String,
         surname: String,
         middleName: String,
-        userAddress: Int,
-        userBalance: Int = 0
+        password: String,
+        userAddress: String,
+        userBalance: String
     )
 
     @ContractAction
@@ -23,7 +24,7 @@ interface Api {
         name: String,
         surname: String,
         middleName: String,
-        employeeBlockchain: String,
+        password: String,
         userAddress: Int,
         userBalance: Int,
         userPostId: Int
@@ -41,6 +42,7 @@ interface Api {
 
     @ContractAction
     fun initiateSendParcel(
+        login: String,
         parcelTo: Int,
         parcelType: String,
         parcelClass: String,
@@ -51,7 +53,7 @@ interface Api {
     )
 
     @ContractAction //parcelDeclaredValue = double в класе, нужно преоброзовать в toDouble() в контракте
-    fun confirmParcel(trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int)
+    fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int)
 
     @ContractAction
     fun checkoutParcel(trackId: String, nextPostOfficeId: Int)
@@ -60,12 +62,12 @@ interface Api {
     fun processParcelDelivery(trackId: String, isAccepted: String)
 
     @ContractAction
-    fun changeEmployeePostId(employeeBlockchain : String, postId: Int)
+    fun changeEmployeePostId(login : String, postId: Int)
 
     @ContractAction
-    fun deleteEmployee(employeeBlockchain: String)
+    fun deleteEmployee(login: String)
 
     @ContractAction
-    fun updatePersonalData(name: String, surname: String, middleName: String, userAddress: Int)
+    fun updatePersonalData(name: String, surname: String, middleName: String, password: String, userAddress: String)
 
 }
