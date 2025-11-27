@@ -16,18 +16,12 @@ interface Api {
         middleName: String,
         password: String,
         userAddress: String,
-        userBalance: String
     )
 
     @ContractAction
     fun registerEmployee(
-        name: String,
-        surname: String,
-        middleName: String,
-        password: String,
-        userAddress: Int,
-        userBalance: Int,
-        userPostId: Int
+        login: String,
+        userAddress: String
     )
 
     @ContractAction

@@ -84,37 +84,35 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         middleName: String,
         password: String,
         userAddress: String,
-        userBalance: String
     ) {
         val newUser =
-            User(name, surname, middleName, password, userAddress.toInt(), userBalance.toDouble(), UserRole.USER, 0)
+            User(name, surname, middleName, password, userAddress.toInt(), 50.0, UserRole.USER, 0)
         users.put(surname, newUser)
     }
 
     override fun registerEmployee(
-        name: String,
-        surname: String,
-        middleName: String,
-        password: String,
-        userAddress: Int,
-        userBalance: Int,
-        userPostId: Int
+        login: String,
+        userAddress: String
     ) {
-        if (users.tryGet(surname).get().userRole != UserRole.ADMIN) {
-            throw IllegalStateException("Вы не администратор!")
+        // Проверка прав администратора
+        val admin = users.tryGet(login).orElseThrow {
+            IllegalStateException("Пользователь не найден!")
         }
 
-        val newUser = User(
-            name,
-            surname,
-            middleName,
-            password,
-            userAddress,
-            userBalance.toDouble(),
-            UserRole.POST_OFFICE_EMPLOYEE,
-            userPostId
+        if (admin.userRole != UserRole.ADMIN) {
+            throw IllegalStateException("Только администратор может добавлять сотрудников!")
+        }
+
+        val existingUser = users.tryGet(login).orElseThrow {
+            IllegalStateException("Пользователь с фамилией '$login' не найден!")
+        }
+
+        val updatedUser = existingUser.copy(
+            userRole = UserRole.POST_OFFICE_EMPLOYEE,
+            employeePostId = userAddress.toInt()
         )
-        users.put(surname, newUser)
+
+        users.put(login, updatedUser)
     }
 
     override fun changeEmployeePostId(login: String, postId: Int) {

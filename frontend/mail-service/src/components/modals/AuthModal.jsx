@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import { getUserRole } from "../../utils/helpers";
 import { loginFormConfig } from "../../utils/formConfigs";
@@ -7,7 +6,6 @@ import { useData } from "../../context/DataProvider";
 
 export default function AuthModal({ show, onHide }) {
   const { users } = useData()
-  const navigate = useNavigate();
 
   const handleAuth = async (formData) => {
     const userLogin = formData.login.split(" ").slice(-1).join("")
@@ -16,7 +14,6 @@ export default function AuthModal({ show, onHide }) {
       alert("Вы вошли в аккаунт")
       localStorage.setItem("currentRole", getUserRole(user.userRole))
       localStorage.setItem("login", userLogin)
-      navigate("/profile")
       location.reload()
     } else alert("Неправильный пароль")
   };

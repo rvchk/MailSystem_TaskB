@@ -1,9 +1,19 @@
 import { Modal } from "react-bootstrap";
 import CustomForm from "../CustomForm";
 import { addEmployeeFormConfig } from "../../utils/formConfigs";
+import { sendTransaction } from "../../utils/api";
 
 export default function RegisterEmployeeModal({ show, onHide, users, postOffices }) {
+  
+  const notEmployess = users?.filter(user => user.userRole == "USER")
 
+  const handleRegisterEmployee = async (formData) => {
+      await sendTransaction("registerEmployee", {
+        ...formData,
+        login: formData.login.split(" ")[0],
+      })
+    };
+ 
   return (
     <Modal show={show} onHide={onHide} size="sm">
       <Modal.Header>
@@ -11,8 +21,8 @@ export default function RegisterEmployeeModal({ show, onHide, users, postOffices
       </Modal.Header>
       <Modal.Body>
         <CustomForm
-          {...addEmployeeFormConfig(users, Object.entries(postOffices))}
-          transactionMethod={"changeEmployeePostId"}
+          {...addEmployeeFormConfig(notEmployess, Object.entries(postOffices))}
+          onSubmit={handleRegisterEmployee}
         />
       </Modal.Body>
     </Modal>

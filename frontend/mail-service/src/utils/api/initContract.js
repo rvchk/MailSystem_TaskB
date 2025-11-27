@@ -3,7 +3,7 @@ export const initContract = async () => {
     fee: 0,
     image: "registry.rvchk.com/repositories/mail:1.0.0",
     imageHash:
-      "e08a04c69000d5bcca1ac2f3967ebbd3da56496543f107a6287190d4c3603f27",
+      "07bb402abfde0c75de37b69443333bc8e996ec4c7bb8184412b956e366572af7",
     contractName: "confident",
     sender: "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
     password: "3YOrynRZCRmx7P71V9JFUg",

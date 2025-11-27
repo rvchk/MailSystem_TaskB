@@ -42,14 +42,6 @@ export const registerFormConfig = (postOffices) => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
-    },
-    {
-      name: "userBalance",
-      label: "Баланс",
-      type: "number",
-      required: true,
-      placeholder: "Введите начальный баланс",
-      min: 0
     }
   ],
   submitText: "Зарегистрироваться",
@@ -182,7 +174,7 @@ export const moneyTransferFormConfig = (users) => ({
 export const addEmployeeFormConfig = (users, postOffices) => ({
   fields: [
     {
-      name: "moneyTransferTo",
+      name: "login",
       label: "Пользователь",
       type: "select",
       required: true,
@@ -192,7 +184,7 @@ export const addEmployeeFormConfig = (users, postOffices) => ({
       }))
     },
     {
-      name: "userPostId",
+      name: "userAddress",
       label: "Отделение работы",
       type: "select",
       required: true,
@@ -200,14 +192,6 @@ export const addEmployeeFormConfig = (users, postOffices) => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
-    },
-    {
-      name: "userBalance",
-      label: "Начальный баланс",
-      type: "number",
-      required: true,
-      placeholder: "Введите баланс",
-      min: 0
     }
   ],
   submitText: "Добавить сотрудника",
@@ -236,7 +220,7 @@ export const deleteEmployeeFormConfig = (employees) => ({
 export const changeEmployeePostFormConfig = (employees, postOffices) => ({
   fields: [
     {
-      name: "employeeBlockchain",
+      name: "login",
       label: "Сотрудник",
       type: "select",
       required: true,
