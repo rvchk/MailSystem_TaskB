@@ -43,20 +43,20 @@ interface Api {
     @ContractAction
     fun initiateSendParcel(
         login: String,
-        parcelTo: Int,
+        parcelTo: String,
         parcelType: String,
         parcelClass: String,
-        parcelWeight: Int,
+        parcelWeight: String,
         parcelBlockchainTo: String,
         currentDate: String,
         dailyCount: String
     )
 
     @ContractAction //parcelDeclaredValue = double в класе, нужно преоброзовать в toDouble() в контракте
-    fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int)
+    fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: String)
 
     @ContractAction
-    fun checkoutParcel(trackId: String, nextPostOfficeId: Int)
+    fun checkoutParcel(trackId: String, nextPostOfficeId: String)
 
     @ContractAction
     fun processParcelDelivery(trackId: String, isAccepted: String)

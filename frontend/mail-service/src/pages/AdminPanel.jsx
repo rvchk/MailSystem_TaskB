@@ -5,9 +5,23 @@ import RemoveEmployeeModal from "../components/admin/RemoveEmployeeModal";
 import { useData } from "../context/DataProvider";
 import { postOffices } from "../utils/helpers";
 import { useModal } from "../utils/hooks/useModal";
+import { useEffect, useState } from "react";
+import ParcelCard from "../components/parcels/ParcelCard";
+import { getParcels } from "../utils/api/requests";
 
 export default function AdminPanel() {
   const { employees, users } = useData()
+  const [parcels, setParcels] = useState()
+
+  useEffect(() => {
+    getParcelsArray()
+  }, [])
+
+  const getParcelsArray = async () => {
+    const res = await getParcels(localStorage.getItem("confidentContractId"))
+    console.log(res)
+    setParcels(res)
+  }
 
   const { modals, openModal, closeModal } = useModal({
     registration: false,
@@ -29,6 +43,10 @@ export default function AdminPanel() {
           Изменить адрес сотрудника
         </Button>
       </div>
+      <h2>Все посылки</h2>
+      {parcels?.map(parcel =>
+        <ParcelCard key={parcel.parcelTrackNumber} parcel={parcel} />
+      )}
       <ChangePostIdModal
         show={modals.changePost}
         onHide={() => closeModal("changePost")}

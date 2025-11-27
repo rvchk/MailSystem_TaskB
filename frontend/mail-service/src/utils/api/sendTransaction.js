@@ -3,8 +3,9 @@ export const sendTransaction = async (functionName, data) => {
   const args = Object.entries(data).map(([key, value]) => ({
     type: typeof value,
     key: key,
-    value: value.toString(),
+    value: value,
   }));
+
   console.log(args)
 
   const contractId = localStorage.getItem("confidentContractId");
@@ -29,8 +30,6 @@ export const sendTransaction = async (functionName, data) => {
     password: "3YOrynRZCRmx7P71V9JFUg",
     contractVersion: 1,
   };
-
-  console.log(transaction)
 
   try {
     const response = await fetch(

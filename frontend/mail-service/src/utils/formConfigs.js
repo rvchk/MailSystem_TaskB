@@ -82,7 +82,7 @@ export const loginFormConfig = (users) => ({
 });
 
 // Конфиг создания посылки
-export const createParcelFormConfig = (postOffices) => ({
+export const createParcelFormConfig = (postOffices, users) => ({
   fields: [
     {
       name: "parcelTo",
@@ -129,9 +129,13 @@ export const createParcelFormConfig = (postOffices) => ({
     {
       name: "parcelBlockchainTo",
       label: "Получатель",
-      type: "text",
+      type: "select",
       required: true,
-      placeholder: "Введите адрес получателя"
+      placeholder: "Выберите получателя",
+      options: users.map(user => ({
+        value: user.surname,
+        label: `${getUserRole(user.userRole)} - ${user.surname} ${user.name}`
+      }))
     }
   ],
   submitText: "Создать посылку",

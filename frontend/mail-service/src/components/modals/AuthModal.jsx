@@ -17,6 +17,7 @@ export default function AuthModal({ show, onHide }) {
       localStorage.setItem("currentRole", getUserRole(user.userRole))
       localStorage.setItem("login", userLogin)
       navigate("/profile")
+      location.reload()
     } else alert("Неправильный пароль")
   };
 

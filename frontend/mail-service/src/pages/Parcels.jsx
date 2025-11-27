@@ -1,50 +1,32 @@
 import { Button } from "react-bootstrap";
-import ChangePostIdModal from "../components/admin/ChangePostIdModal";
-import RegisterEmployeeModal from "../components/admin/RegisterEmployeeModal";
-import RemoveEmployeeModal from "../components/admin/RemoveEmployeeModal";
 import { useModal } from "../utils/hooks/useModal";
 import { useData } from "../context/DataProvider";
 import { postOffices } from "../utils/helpers";
+import CreateParcelModal from "../components/user/CreateParcelModal";
 
 export default function Parcels() {
-  const { employees, users } = useData()
+  const { users } = useData()
 
   const { modals, openModal, closeModal } = useModal({
     confirmParcel: false,
     deletion: false,
-    changePost: false
+    changePost: false,
+    createParcel: false
   });
 
   return (
     <>
       <h1>Посылки</h1>
       <div className="buttons">
-        <Button variant="primary" onClick={() => openModal("confirmParcel")}>
-          Подтвердить посылку
-        </Button>
-        <Button variant="primary" onClick={() => openModal("deletion")}>
-          Удалить сотрудника
-        </Button>
-        <Button variant="primary" onClick={() => openModal("changePost")}>
-          Изменить адрес сотрудника
+        <Button variant="primary" onClick={() => openModal("createParcel")}>
+          Создать посылку
         </Button>
       </div>
-      <ChangePostIdModal
-        show={modals.changePost}
-        onHide={() => closeModal("changePost")}
-        employees={employees}
+      <CreateParcelModal
+        show={modals.createParcel}
+        onHide={() => closeModal("createParcel")}
         postOffices={postOffices}
-      />
-      <RegisterEmployeeModal
-        show={modals.registration}
-        onHide={() => closeModal("registration")}
         users={users}
-        postOffices={postOffices}
-      />
-      <RemoveEmployeeModal
-        show={modals.deletion}
-        onHide={() => closeModal("deletion")}
-        employees={employees}
       />
     </>
   );

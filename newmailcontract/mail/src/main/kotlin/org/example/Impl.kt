@@ -25,7 +25,6 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         postOffices.put("346770", PostOffice(346770, PostOfficeType.SORTING_CENTER, emptyList(), emptyList()))
         postOffices.put("346771", PostOffice(346771, PostOfficeType.POST_OFFICE, emptyList(), emptyList()))
         postOffices.put("346781", PostOffice(346781, PostOfficeType.POST_OFFICE, emptyList(), emptyList()))
-        contractState.put("CONTRACT_CREATOR", call.sender.asBase58String())
 
         users.put(
             "Семенов",
@@ -210,19 +209,19 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
 
     override fun initiateSendParcel(
         login: String,
-        parcelTo: Int,
+        parcelTo: String,
         parcelType: String,
         parcelClass: String,
-        parcelWeight: Int,
+        parcelWeight: String,
         parcelBlockchainTo: String,
         currentDate: String,
         dailyCount: String
     ) {
-        if (parcelWeight > 10.0) {
+        if (parcelWeight.toDouble() > 10.0) {
             throw IllegalStateException("Вес отправления не может превышать 10 кг!")
         }
 
-        if (parcelWeight <= 0) {
+        if (parcelWeight.toDouble() <= 0) {
             throw IllegalStateException("Вес отправления должен быть положительным!")
         }
 
@@ -230,7 +229,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
             throw IllegalStateException("Получатель не найден!")
         }
 
-        if (!postOffices.tryGet(parcelTo.toString()).isPresent) {
+        if (!postOffices.tryGet(parcelTo).isPresent) {
             throw IllegalStateException("Почтовое отделение назначения не найдено!")
         }
 
@@ -243,9 +242,9 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         }
 
         val newParcel = Parcel(
-            parcelTrackNumber = createParcelTrackNumber(parcelFrom, parcelTo, currentDate, dailyCount),
+            parcelTrackNumber = createParcelTrackNumber(parcelFrom, parcelTo.toInt(), currentDate, dailyCount),
             parcelFrom = parcelFrom,
-            parcelTo = parcelTo,
+            parcelTo = parcelTo.toInt(),
             parcelType = ParcelType.valueOf(parcelType),
             parcelClass = ParcelClass.valueOf(parcelClass),
             parcelWeight = parcelWeight.toDouble(),
@@ -264,7 +263,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
         parcels.put(newParcel.parcelTrackNumber, newParcel)
     }
 
-    override fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: Int) {
+    override fun confirmParcel(login: String, trackId: String, parcelDeclaredValue: String, nextPostOfficeId: String) {
         val currentUser = users.tryGet(login).orElseThrow {
             IllegalStateException("Вы не зарегистрированы")
         }
@@ -300,14 +299,14 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
 
         val updatedParcel = parcel.copy(
             parcelConfirmStatus = ParcelStatus.CONFIRMED,
-            parcelCurrentOfficeId = nextPostOfficeId,
-            parcelNextOfficeId = nextPostOfficeId
+            parcelCurrentOfficeId = nextPostOfficeId.toInt(),
+            parcelNextOfficeId = nextPostOfficeId.toInt()
         )
 
         parcels.put(trackId, updatedParcel)
     }
 
-    override fun checkoutParcel(trackId: String, nextPostOfficeId: Int) {
+    override fun checkoutParcel(trackId: String, nextPostOfficeId: String) {
         val parcel = parcels.tryGet(trackId).orElseThrow {
             IllegalStateException("Не существует посылки")
         }
@@ -336,7 +335,7 @@ class Impl(val contractState: ContractState, val call: ContractCall) : Api {
 
         val updatedParcel = parcel.copy(
             parcelCurrentOfficeId = employee.employeePostId!!,
-            parcelNextOfficeId = nextPostOfficeId
+            parcelNextOfficeId = nextPostOfficeId.toInt()
         )
         parcels.put(trackId, updatedParcel)
     }

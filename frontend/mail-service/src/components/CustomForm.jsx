@@ -97,6 +97,7 @@ export default function CustomForm({
         );
     }
   };
+  
   const isFormValid = fields.every(field =>
     !field.required || formData[field.name]
   );

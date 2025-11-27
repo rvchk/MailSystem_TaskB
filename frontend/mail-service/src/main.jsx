@@ -5,7 +5,7 @@ import App from "./App.jsx";
 import DataProvider from "./context/DataProvider.jsx"
 import Profile from "./pages/Profile.jsx";
 import AdminPanel from "./pages/AdminPanel.jsx";
-import Employee from "./pages/AdminPanel.jsx";
+import Employee from "./pages/Employee.jsx";
 import Parcels from "./pages/Parcels.jsx";
 import MoneyTransfers from "./pages/MoneyTransfers.jsx";
 import { Button } from "react-bootstrap";
