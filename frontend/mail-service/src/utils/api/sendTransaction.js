@@ -1,16 +1,15 @@
 export const sendTransaction = async (functionName, data) => {
 
   const args = Object.entries(data).map(([key, value]) => ({
-    type: typeof value,
+    type: typeof value == "number" ? "integer" : "string",
     key: key,
     value: value,
   }));
 
   console.log(args)
 
-  const contractId = localStorage.getItem("confidentContractId");
   const transaction = {
-    contractId: contractId,
+    contractId: localStorage.getItem("confidentContractId"),
     fee: 0,
     type: 104,
     params: [
@@ -19,11 +18,7 @@ export const sendTransaction = async (functionName, data) => {
         value: functionName,
         key: "action",
       },
-      ...args.map((param) => ({
-        type: param.type,
-        key: param.key,
-        value: param.value,
-      })),
+      ...args
     ],
     version: 2,
     sender: "3NhwVMXmwNVRzN6KdwRP9RFMH79PwSpPnTF",
@@ -31,25 +26,16 @@ export const sendTransaction = async (functionName, data) => {
     contractVersion: 1,
   };
 
-  try {
-    const response = await fetch(
-      "http://localhost:6862/transactions/signAndBroadcast",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(transaction),
-      },
-    );
-    console.log(response)
+  const response = await fetch(
+    "http://localhost:6862/transactions/signAndBroadcast",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(transaction),
+    },
+  );
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Ошибка: ${response.status} - ${errorData.message}`);
-    }
+  if (!response.ok) throw new Error(`Ошибка: транзакции`);
 
-    return await response.json();
-  } catch (error) {
-    console.error("Ошибка при отправке транзакции:", error);
-    throw error;
-  }
+  return await response.json();
 };

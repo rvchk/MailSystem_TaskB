@@ -1,51 +1,23 @@
-// utils/formConfigs.js
-
 import { getUserRole } from "./helpers";
 
 // Конфиг регистрации
 export const registerFormConfig = (postOffices) => ({
   fields: [
-    {
-      name: "name",
-      label: "Имя",
-      type: "text",
-      required: true,
-      placeholder: "Введите ваше имя"
-    },
-    {
-      name: "surname",
-      label: "Фамилия",
-      type: "text",
-      required: true,
-      placeholder: "Введите вашу фамилию"
-    },
-    {
-      name: "middleName",
-      label: "Отчество",
-      type: "text",
-      required: true,
-      placeholder: "Введите ваше отчество"
-    },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      required: true,
-      placeholder: "Введите пароль"
-    },
+    { name: "name", label: "Имя" },
+    { name: "surname", label: "Фамилия" },
+    { name: "middleName", label: "Отчество" },
+    { name: "password", label: "Пароль", type: "password" },
     {
       name: "userAddress",
       label: "Адрес проживания",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
     }
   ],
-  submitText: "Зарегистрироваться",
-  loadingText: "Регистрация..."
+  submitText: "Зарегистрироваться"
 });
 
 // Конфиг входа
@@ -55,22 +27,14 @@ export const loginFormConfig = (users) => ({
       name: "login",
       label: "Логин",
       type: "select",
-      required: true,
       options: users.map(user => ({
         value: user.surname,
         label: `${getUserRole(user.userRole)} - ${user.surname} ${user.name}`
       }))
     },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      required: true,
-      placeholder: "Введите ваш пароль"
-    }
+    { name: "password", label: "Пароль", type: "password" }
   ],
-  submitText: "Войти",
-  loadingText: "Вход..."
+  submitText: "Войти"
 });
 
 // Конфиг создания посылки
@@ -80,7 +44,6 @@ export const createParcelFormConfig = (postOffices, users) => ({
       name: "parcelTo",
       label: "Отделение назначения",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
@@ -90,7 +53,6 @@ export const createParcelFormConfig = (postOffices, users) => ({
       name: "parcelType",
       label: "Тип отправления",
       type: "select",
-      required: true,
       options: [
         { value: "LETTER", label: "Письмо" },
         { value: "PARCEL", label: "Посылка" },
@@ -101,37 +63,24 @@ export const createParcelFormConfig = (postOffices, users) => ({
       name: "parcelClass",
       label: "Класс отправления",
       type: "select",
-      required: true,
       options: [
         { value: "FIRST", label: "1 класс" },
         { value: "SECOND", label: "2 класс" },
         { value: "THIRD", label: "3 класс" }
       ]
     },
-    {
-      name: "parcelWeight",
-      label: "Вес (кг)",
-      type: "number",
-      required: true,
-      placeholder: "Введите вес от 0.1 до 10 кг",
-      min: 0.1,
-      max: 10,
-      step: 0.1
-    },
+    { name: "parcelWeight", label: "Вес (кг)", type: "number" },
     {
       name: "parcelBlockchainTo",
       label: "Получатель",
       type: "select",
-      required: true,
-      placeholder: "Выберите получателя",
       options: users.map(user => ({
         value: user.surname,
         label: `${getUserRole(user.userRole)} - ${user.surname} ${user.name}`
       }))
     }
   ],
-  submitText: "Создать посылку",
-  loadingText: "Создание..."
+  submitText: "Создать посылку"
 });
 
 // Конфиг денежного перевода
@@ -141,43 +90,24 @@ export const moneyTransferFormConfig = (users) => ({
       name: "moneyTransferTo",
       label: "Получатель",
       type: "select",
-      required: true,
       options: users.map(user => ({
         value: user.userBlockchain,
         label: `${user.surname} ${user.name}`
       }))
     },
-    {
-      name: "moneyTransferAmount",
-      label: "Сумма (WEST)",
-      type: "number",
-      required: true,
-      placeholder: "Введите сумму",
-      min: 0.1,
-      step: 0.1
-    },
-    {
-      name: "moneyTransferLifeTime",
-      label: "Срок жизни (дней)",
-      type: "number",
-      required: true,
-      placeholder: "Введите срок в днях",
-      min: 1,
-      max: 30
-    }
+    { name: "moneyTransferAmount", label: "Сумма (WEST)", type: "number" },
+    { name: "moneyTransferLifeTime", label: "Срок жизни (дней)", type: "number" }
   ],
-  submitText: "Отправить перевод",
-  loadingText: "Отправка..."
+  submitText: "Отправить перевод"
 });
 
-// Конфиг добавления сотрудника (Админ)
+// Конфиг добавления сотрудника
 export const addEmployeeFormConfig = (users, postOffices) => ({
   fields: [
     {
       name: "login",
       label: "Пользователь",
       type: "select",
-      required: true,
       options: users.map(user => ({
         value: user.userBlockchain,
         label: `${user.surname} ${user.name}`
@@ -187,43 +117,38 @@ export const addEmployeeFormConfig = (users, postOffices) => ({
       name: "userAddress",
       label: "Отделение работы",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
     }
   ],
-  submitText: "Добавить сотрудника",
-  loadingText: "Добавление..."
+  submitText: "Добавить сотрудника"
 });
 
-// Конфиг удаления сотрудника (Админ)
+// Конфиг удаления сотрудника
 export const deleteEmployeeFormConfig = (employees) => ({
   fields: [
     {
       name: "employeeBlockchain",
       label: "Сотрудник для удаления",
       type: "select",
-      required: true,
       options: employees.map(employee => ({
         value: employee.userBlockchain,
         label: `${employee.surname} ${employee.name} - ${employee.employeePostId}`
       }))
     }
   ],
-  submitText: "Удалить сотрудника",
-  loadingText: "Удаление..."
+  submitText: "Удалить сотрудника"
 });
 
-// Конфиг изменения отделения сотрудника (Админ)
+// Конфиг изменения отделения сотрудника
 export const changeEmployeePostFormConfig = (employees, postOffices) => ({
   fields: [
     {
       name: "login",
       label: "Сотрудник",
       type: "select",
-      required: true,
       options: employees.map(employee => ({
         value: employee.userBlockchain,
         label: `${employee.surname} ${employee.name}`
@@ -233,80 +158,64 @@ export const changeEmployeePostFormConfig = (employees, postOffices) => ({
       name: "postId",
       label: "Новое отделение",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
     }
   ],
-  submitText: "Изменить отделение",
-  loadingText: "Изменение..."
+  submitText: "Изменить отделение"
 });
 
-// Конфиг подтверждения посылки (Сотрудник)
+// Конфиг подтверждения посылки
 export const confirmParcelFormConfig = (parcels, postOffices) => ({
   fields: [
     {
       name: "trackId",
       label: "Трек-номер посылки",
       type: "select",
-      required: true,
       options: parcels.map(parcel => ({
         value: parcel.parcelTrackNumber,
         label: `${parcel.parcelTrackNumber} - ${parcel.parcelType}`
       }))
     },
-    {
-      name: "parcelDeclaredValue",
-      label: "Объявленная ценность",
-      type: "number",
-      required: true,
-      placeholder: "Введите ценность",
-      min: 0,
-      step: 0.1
-    },
+    { name: "parcelDeclaredValue", label: "Объявленная ценность", type: "number" },
     {
       name: "nextPostOfficeId",
       label: "Следующее отделение",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office[0],
         label: `${office[0]} - ${office[1]}`
       }))
     }
   ],
-  submitText: "Подтвердить посылку",
-  loadingText: "Подтверждение..."
+  submitText: "Подтвердить посылку"
 });
 
-// Конфиг обработки посылки в транзите (Сотрудник)
+// Конфиг обработки посылки в транзите
 export const checkoutParcelFormConfig = (parcels) => ({
   fields: [
     {
       name: "trackId",
       label: "Трек-номер посылки",
       type: "select",
-      required: true,
       options: parcels.map(parcel => ({
         value: parcel.parcelTrackNumber,
         label: `${parcel.parcelTrackNumber} - ${parcel.parcelType}`
       }))
     }
   ],
-  submitText: "Обработать посылку",
-  loadingText: "Обработка..."
+  submitText: "Обработать посылку"
 });
 
-// Конфиг принятия/отклонения посылки (Все)
+// Конфиг принятия/отклонения посылки
 export const processParcelDeliveryFormConfig = (parcels) => ({
   fields: [
     {
       name: "trackId",
       label: "Трек-номер посылки",
       type: "select",
-      required: true,
       options: parcels.map(parcel => ({
         value: parcel.parcelTrackNumber,
         label: `${parcel.parcelTrackNumber} - ${parcel.parcelType}`
@@ -316,43 +225,38 @@ export const processParcelDeliveryFormConfig = (parcels) => ({
       name: "isAccepted",
       label: "Действие",
       type: "select",
-      required: true,
       options: [
         { value: "true", label: "Принять посылку" },
         { value: "false", label: "Отклонить посылку" }
       ]
     }
   ],
-  submitText: "Подтвердить",
-  loadingText: "Обработка..."
+  submitText: "Подтвердить"
 });
 
-// Конфиг отмены денежного перевода (Все)
+// Конфиг отмены денежного перевода
 export const cancelMoneyTransferFormConfig = (transfers) => ({
   fields: [
     {
       name: "transferId",
       label: "Перевод для отмены",
       type: "select",
-      required: true,
       options: transfers.map(transfer => ({
         value: transfer.moneyTransferId,
         label: `${transfer.moneyTransferId} - ${transfer.moneyTransferAmount} WEST`
       }))
     }
   ],
-  submitText: "Отменить перевод",
-  loadingText: "Отмена..."
+  submitText: "Отменить перевод"
 });
 
-// Конфиг принятия/отклонения перевода (Все)
+// Конфиг принятия/отклонения перевода
 export const processMoneyTransferFormConfig = (transfers) => ({
   fields: [
     {
       name: "transferId",
       label: "Перевод",
       type: "select",
-      required: true,
       options: transfers.map(transfer => ({
         value: transfer.moneyTransferId,
         label: `${transfer.moneyTransferId} - ${transfer.moneyTransferAmount} WEST`
@@ -362,84 +266,49 @@ export const processMoneyTransferFormConfig = (transfers) => ({
       name: "action",
       label: "Действие",
       type: "select",
-      required: true,
       options: [
         { value: "accept", label: "Принять перевод" },
         { value: "decline", label: "Отклонить перевод" }
       ]
     }
   ],
-  submitText: "Подтвердить",
-  loadingText: "Обработка..."
+  submitText: "Подтвердить"
 });
 
-// Конфиг редактирования профиля (Все)
-export const editProfileFormConfig = (postOffices, currentUser) => ({
+// Конфиг редактирования профиля
+export const editProfileFormConfig = (postOffices) => ({
   fields: [
-    {
-      name: "name",
-      label: "Имя",
-      type: "text",
-      required: true,
-      placeholder: "Введите имя",
-      defaultValue: currentUser?.name
-    },
-    {
-      name: "surname",
-      label: "Фамилия",
-      type: "text",
-      required: true,
-      placeholder: "Введите фамилию",
-      defaultValue: currentUser?.surname
-    },
-    {
-      name: "middleName",
-      label: "Отчество",
-      type: "text",
-      required: true,
-      placeholder: "Введите отчество",
-      defaultValue: currentUser?.middleName
-    },
+    { name: "name", label: "Имя" },
+    { name: "surname", label: "Фамилия" },
+    { name: "middleName", label: "Отчество" },
     {
       name: "userAddress",
       label: "Адрес",
       type: "select",
-      required: true,
       options: postOffices.map(office => ({
         value: office.postOfficeId,
         label: `${office.postOfficeId}`
-      })),
-      defaultValue: currentUser?.userAddress
+      }))
     },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      required: true,
-      placeholder: "Введите пароль",
-      defaultValue: currentUser?.password
-    }
+    { name: "password", label: "Пароль", type: "password" }
   ],
-  submitText: "Сохранить изменения",
-  loadingText: "Сохранение..."
+  submitText: "Сохранить изменения"
 });
 
-// Конфиг просмотра истории посылки (Все)
+// Конфиг просмотра истории посылки
 export const parcelHistoryFormConfig = (parcels) => ({
   fields: [
     {
       name: "trackId",
       label: "Трек-номер посылки",
       type: "select",
-      required: true,
       options: parcels.map(parcel => ({
         value: parcel.parcelTrackNumber,
         label: `${parcel.parcelTrackNumber} - ${parcel.parcelType}`
       }))
     }
   ],
-  submitText: "Показать историю",
-  loadingText: "Загрузка..."
+  submitText: "Показать историю"
 });
 
 // Конфиг выбора пользователя для демо-входа
@@ -449,20 +318,12 @@ export const demoLoginFormConfig = (users) => ({
       name: "userId",
       label: "Выберите пользователя",
       type: "select",
-      required: true,
       options: users.map(user => ({
         value: user.userBlockchain,
         label: `${user.surname} ${user.name} ${user.middleName} - ${user.userRole}`
       }))
     },
-    {
-      name: "password",
-      label: "Пароль",
-      type: "password",
-      required: true,
-      placeholder: "Введите пароль (password123)"
-    }
+    { name: "password", label: "Пароль", type: "password" }
   ],
-  submitText: "Войти",
-  loadingText: "Вход..."
+  submitText: "Войти"
 });

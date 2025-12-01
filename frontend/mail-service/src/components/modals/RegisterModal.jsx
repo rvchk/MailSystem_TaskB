@@ -19,7 +19,9 @@ export default function RegisterModal({ show, onHide }) {
     alert("Регистрация идет, ждите...")
     
     setInterval(async () => {
-      if (user) location.reload()
+      if (user.middleName == localStorage.getItem("login")) {
+        location.reload()
+      }
     }, 2000);
   };
 

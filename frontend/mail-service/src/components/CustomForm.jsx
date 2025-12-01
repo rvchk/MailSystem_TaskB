@@ -1,134 +1,59 @@
-import { Alert, Button, Form } from "react-bootstrap";
-import { useFormState } from "../utils/hooks";
-import { sendTransaction } from "../utils/api";
+import { Button, Form } from "react-bootstrap";
+import { useRef, useState } from "react";
 
 export default function CustomForm({
   fields,
   onSubmit,
-  transactionMethod,
   submitText = "Отправить",
-  loadingText = "Отправка...",
-  initialData = {}
 }) {
-  const {
-    formData,
-    error,
-    setError,
-    loading,
-    setLoading,
-    handleInputChange,
-    resetForm
-  } = useFormState(initialData);
 
-  // Валидация при изменении формы
+  const formRef = useRef();
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formRef.current.checkValidity()) {
+      return;
+    }
+
     setLoading(true);
 
-    try {
-      if (onSubmit) {
-        await onSubmit(formData);
-        resetForm();
-      }
-      else if (transactionMethod) {
-        await sendTransaction(transactionMethod, formData)
-        resetForm();
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    const formData = new FormData(formRef.current);
+    const data = Object.fromEntries(formData.entries());
+
+    await onSubmit(data);
+    formRef.current.reset();
+    setLoading(false);
   };
 
   const renderField = (field) => {
-    const commonProps = {
-      name: field.name,
-      value: formData[field.name] || '',
-      onChange: handleInputChange,
-      required: field.required,
-      placeholder: field.placeholder,
-      className: "w-100"
-    };
-
-    switch (field.type) {
-      case 'select':
-        return (
-          <Form.Select {...commonProps}>
-            <option value="" disabled>{field.placeholder || `Выберите ${field.label}`}</option>
-            {field.options?.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Form.Select>
-        );
-
-      case 'textarea':
-        return (
-          <Form.Control as="textarea" rows={3} {...commonProps} />
-        );
-
-      case 'checkbox':
-        return (
-          <Form.Check
-            type="checkbox"
-            label={field.placeholder}
-            checked={formData[field.name] || false}
-            onChange={handleInputChange}
-            name={field.name}
-          />
-        );
-
-      case 'number':
-        return (
-          <Form.Control
-            type="number"
-            min={field.min}
-            max={field.max}
-            step={field.step}
-            {...commonProps}
-          />
-        );
-
-      default:
-        return (
-          <Form.Control type={field.type || "text"} {...commonProps} />
-        );
+    if (field.type == 'select') {
+      return (
+        <Form.Select name={field.name}>
+          {field.options?.map(opt => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </Form.Select>
+      );
+    } else {
+      return <Form.Control type="text" name={field.name} className="w-100" />;
     }
   };
-  
-  const isFormValid = fields.every(field =>
-    !field.required || formData[field.name]
-  );
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form ref={formRef} onSubmit={handleSubmit}>
       {fields.map(field => (
         <Form.Group key={field.name} className="mt-3">
-          <Form.Label>
-            {field.label} {field.required}
-          </Form.Label>
+          <Form.Label>{field.label}</Form.Label>
           {renderField(field)}
-          {field.helpText && (
-            <Form.Text className="text-muted">{field.helpText}</Form.Text>
-          )}
         </Form.Group>
       ))}
 
-      {error && (
-        <Alert className="mt-4" variant="danger">
-          {error}
-        </Alert>
-      )}
-
-      <Button
-        variant="primary"
-        type="submit"
-        disabled={!!error || loading || !isFormValid}
-        className="w-100 mt-3"
-      >
-        {loading ? loadingText : submitText}
+      <Button type="submit" disabled={loading} className="w-100 mt-3">
+        {loading ? "Отправка..." : submitText}
       </Button>
     </Form>
   );
